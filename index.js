@@ -1,0 +1,22 @@
+"use strict";
+exports.__esModule = true;
+var express = require("express");
+var proxy = require("http-proxy-middleware");
+var extApiUrl = 'https://accounts.ashesofcreation.com';
+var proxyServer = proxy.createProxyMiddleware('/', {
+    target: 'https://accounts.ashesofcreation.com',
+    changeOrigin: true,
+    secure: false
+});
+var port = process.env.port || 3000;
+var app = express();
+app.get('/', function (req, res) { return res.send('AOC API Proxy server'); });
+app.get('*', function (req, res, next) {
+    var authorization = req.headers['authorization'];
+    req.headers.cookie = "intrepidUser=" + authorization;
+    next();
+});
+app.use('/api/*', proxyServer);
+app.listen(port, function () {
+    console.log("Example app listening at http://localhost:" + port);
+});
