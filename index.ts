@@ -4,7 +4,7 @@ import * as proxy from 'http-proxy-middleware';
 
 const extApiUrl = 'https://accounts.ashesofcreation.com';
 
-const proxyServer = proxy.createProxyMiddleware('/api', {
+const proxyServer = proxy.createProxyMiddleware('/', {
     target: 'https://accounts.ashesofcreation.com',
     changeOrigin: true,
     secure: false
@@ -13,13 +13,15 @@ const proxyServer = proxy.createProxyMiddleware('/api', {
 const port = process.env.port || 3000;
 const app = express();
 
+app.get('/', (req, res) => res.send('AOC API Proxy server'));
+
 app.get('*', (req, res, next) => {
     const authorization = req.headers['authorization'];
     req.headers.cookie = `intrepidUser=${authorization}`;
     next();
 });
 
-app.use('*', proxyServer);
+app.use('/api/*', proxyServer);
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
