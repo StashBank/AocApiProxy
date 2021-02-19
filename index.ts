@@ -2,10 +2,10 @@ import * as express  from 'express';
 import * as cors  from 'cors';
 import * as proxy from 'http-proxy-middleware';
 
-const extApiUrl = 'https://accounts.ashesofcreation.com';
+const targetApiUrl = process.env.TARGET_API_URL || 'https://accounts.ashesofcreation.com';
 
 const proxyServer = proxy.createProxyMiddleware('/', {
-    target: 'https://accounts.ashesofcreation.com',
+    target: targetApiUrl,
     changeOrigin: true,
     secure: false,
     onProxyRes: (proxyRes, req, res) => {
