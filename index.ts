@@ -8,6 +8,11 @@ const proxyServer = proxy.createProxyMiddleware('/', {
     target: targetApiUrl,
     changeOrigin: true,
     secure: false,
+    onProxyReq: (proxyReq, req, res) => {
+        const authorization = req.headers['authorization'];
+        console.log('AUTH_TOKEN %s', authorization);
+        proxyReq.setHeader('Cookie', `intrepidUser=${authorization}`);
+    },
     onProxyRes: (proxyRes, req, res) => {
         const origin = req.headers['origin'] || req.headers['referer'];
         if (origin) {
@@ -27,12 +32,6 @@ app.get('/', (req, res) => res.send(`
         </div>
     </div>
 `));
-
-app.get('*', (req, res, next) => {
-    const authorization = req.headers['authorization'];
-    req.headers.cookie = `intrepidUser=${authorization}`;
-    next();
-});
 
 app.use('/api/*', proxyServer);
 
