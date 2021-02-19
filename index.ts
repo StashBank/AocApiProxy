@@ -19,7 +19,14 @@ const proxyServer = proxy.createProxyMiddleware('/', {
 const port = process.env.PORT || 3000;
 const app = express();
 
-app.get('/', (req, res) => res.send(`AOC API Proxy server\nTarget is: ${process.env.TARGET_API_URL}`));
+app.get('/', (req, res) => res.send(`
+    <div style="height: 100%;width:100%;display:flex;justify-content:center;align-items:center">
+        <div>
+            <p>AOC API Proxy server</p>
+            <p>Target is: ${process.env.TARGET_API_URL}</p>
+        </div>
+    </div>
+`));
 
 app.get('*', (req, res, next) => {
     const authorization = req.headers['authorization'];
