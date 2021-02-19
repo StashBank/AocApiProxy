@@ -7,7 +7,13 @@ const extApiUrl = 'https://accounts.ashesofcreation.com';
 const proxyServer = proxy.createProxyMiddleware('/', {
     target: 'https://accounts.ashesofcreation.com',
     changeOrigin: true,
-    secure: false
+    secure: false,
+    onProxyRes: (proxyRes, req, res) => {
+        const origin = req.headers['origin'] || req.headers['referer'];
+        if (origin) {
+            proxyRes.headers['access-control-allow-origin'] =  origin;
+        }
+    }
 })
 
 const port = process.env.PORT || 3000;
