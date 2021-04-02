@@ -35,6 +35,10 @@ app.get('/', (req, res) => res.send(`
 
 app.use('/api/*', proxyServer);
 
+app.use('/shop', (req, res) => {
+    res.redirect('https://aoc-op.web.app/shop')
+})
+
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
 });
