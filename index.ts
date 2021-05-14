@@ -44,7 +44,7 @@ app.get('/', (req, res) => res.send(`
 `));
 
 app.use('/api/*', proxyServer);
-app.use('/aoc-webapp/*', proxyServer);
+app.use('/aoc-webapp/*', webAppProxyServer);
 
 app.use('/shop', (req, res) => {
     res.redirect('https://aoc-op.web.app/shop')
