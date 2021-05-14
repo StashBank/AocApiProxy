@@ -1,8 +1,12 @@
 import * as express  from 'express';
 import * as cors  from 'cors';
 import * as proxy from 'http-proxy-middleware';
+import dotenv from 'dotenv';
 
-const targetApiUrl = process.env.TARGET_API_URL || 'https://accounts.ashesofcreation.com';
+dotenv.config();
+
+const targetApiUrl = process.env.TARGET_API_URL;
+const targetWebAppUrl = process.env.TARGET_API_URL;
 
 const proxyServer = proxy.createProxyMiddleware('/', {
     target: targetApiUrl,
@@ -21,6 +25,12 @@ const proxyServer = proxy.createProxyMiddleware('/', {
     }
 })
 
+const webAppProxyServer = proxy.createProxyMiddleware('/', {
+    target: targetWebAppUrl,
+    changeOrigin: true,
+    secure: false
+})
+
 const port = process.env.PORT || 3000;
 const app = express();
 
@@ -34,6 +44,7 @@ app.get('/', (req, res) => res.send(`
 `));
 
 app.use('/api/*', proxyServer);
+app.use('/aoc-webapp/*', proxyServer);
 
 app.use('/shop', (req, res) => {
     res.redirect('https://aoc-op.web.app/shop')
