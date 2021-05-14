@@ -15,6 +15,7 @@ const webAppProxyServer = proxy.createProxyMiddleware('/', {
         const origin = req.headers['origin'] || req.headers['referer'];
         if (origin) {
             proxyRes.headers['access-control-allow-origin'] = origin;
+            proxyRes.headers['access-control-allow-credentials'] = 'true';
         }
     }
 })
