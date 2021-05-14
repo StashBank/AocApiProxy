@@ -10,7 +10,13 @@ const targetWebAppUrl = process.env.TARGET_WEBAPP_URL;
 const webAppProxyServer = proxy.createProxyMiddleware('/', {
     target: targetWebAppUrl,
     changeOrigin: true,
-    secure: false
+    secure: false,
+    onProxyRes: (proxyRes, req, res) => {
+        const origin = req.headers['origin'] || req.headers['referer'];
+        if (origin) {
+            proxyRes.headers['access-control-allow-origin'] = origin;
+        }
+    }
 })
 
 const port = process.env.PORT || 3003;
