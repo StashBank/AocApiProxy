@@ -1,7 +1,7 @@
 import * as express  from 'express';
 import * as cors  from 'cors';
 import * as proxy from 'http-proxy-middleware';
-import dotenv from 'dotenv';
+import * as dotenv from 'dotenv';
 
 dotenv.config();
 
